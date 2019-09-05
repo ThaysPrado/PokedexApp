@@ -5,7 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -42,11 +45,11 @@ public class JSONAdapter extends BaseAdapter {
         ViewHolder holder;
 
         if (convertView == null) {
-
             convertView = mInflater.inflate(R.layout.row_list, null);
-
             holder = new ViewHolder();
+
             holder.pokemonTextView = convertView.findViewById(R.id.pokemonName);
+            holder.pokemonImageView = convertView.findViewById(R.id.pokemonImage);
 
             convertView.setTag(holder);
         } else {
@@ -63,6 +66,11 @@ public class JSONAdapter extends BaseAdapter {
 
         holder.pokemonTextView.setText(pokemonName);
 
+        if (jsonObject.has("url")) {
+            String imgUrl = getImgUrl(jsonObject.optString("url"));
+            Picasso.with(mContext).load(imgUrl).into(holder.pokemonImageView);
+        }
+
         return convertView;
     }
 
@@ -71,8 +79,16 @@ public class JSONAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    private String getImgUrl(String url) {
+        String[] parts = url.split("pokemon/");
+        String imgUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
+        imgUrl +=  parts[1].replace("/", "") + ".png";
+        return imgUrl;
+    }
+
     private static class ViewHolder {
         public TextView pokemonTextView;
+        public ImageView pokemonImageView;
     }
 
 }

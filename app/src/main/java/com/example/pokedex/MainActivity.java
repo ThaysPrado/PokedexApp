@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.GridView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String QUERY_URL = "https://pokeapi.co/api/v2/pokemon";
 
-    private ListView mainListView = null;
+    private GridView mainGridView = null;
 
     JSONAdapter mJSONAdapter;
 
@@ -27,11 +27,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mainListView = findViewById(R.id.mainListView);
+        mainGridView = findViewById(R.id.mainGridView);
 
         mJSONAdapter = new JSONAdapter(this, getLayoutInflater());
 
-        mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mainGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 JSONObject jsonObject =  mJSONAdapter.getItem(position);
@@ -46,12 +46,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mainListView.setAdapter(mJSONAdapter);
+        mainGridView.setAdapter(mJSONAdapter);
 
         loadData();
 
     }
-
 
     private void loadData() {
 
@@ -68,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
                     mJSONAdapter.updateData(jsonObject.optJSONArray("results"));
 
                 }
-
 
                 @Override
                 public void onFailure(int statusCode, Throwable throwable, JSONObject error) {

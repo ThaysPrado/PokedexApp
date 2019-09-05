@@ -23,7 +23,8 @@ import java.util.Map;
 public class DetailsActivity extends AppCompatActivity {
 
     private static final String QUERY_URL = "https://pokeapi.co/api/v2/pokemon/";
-    private static final String QUERY_SPRITE_URL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
+    private static final String QUERY_SPRITE_URL = "https://raw.githubusercontent.com/PokeAPI/" +
+                                                    "sprites/master/sprites/pokemon/";
 
     private TextView pokemonTextView;
 
@@ -118,26 +119,44 @@ public class DetailsActivity extends AppCompatActivity {
         try {
 
             pokemonTextView.setText(jsonObject.getString("name"));
+            pokemonTextView.setVisibility(View.VISIBLE);
+
             heightTextView.setText(jsonObject.getString("height"));
+            heightTextView.setVisibility(View.VISIBLE);
+
             weightTextView.setText(jsonObject.getString("weight"));
+            weightTextView.setVisibility(View.VISIBLE);
 
-            JSONArray teste = jsonObject.getJSONArray("abilities");
+            TextView heightText = findViewById(R.id.textView3);
+            TextView weightText = findViewById(R.id.textView4);
 
-            int max = teste.length();
+            heightText.setVisibility(View.VISIBLE);
+            weightText.setVisibility(View.VISIBLE);
 
-            JSONObject ability1 = teste.getJSONObject(0).getJSONObject("ability");
+            JSONArray abilities = jsonObject.getJSONArray("abilities");
+
+            int max = abilities.length();
+
+            JSONObject ability1 = abilities.getJSONObject(0).getJSONObject("ability");
             ability1TextView.setText(ability1.getString("name"));
+            ability1TextView.setVisibility(View.VISIBLE);
+
+            TextView textAbilities = findViewById(R.id.textAbilities);
+            textAbilities.setVisibility(View.VISIBLE);
 
             if (max == 2) {
-                JSONObject ability2 = teste.getJSONObject(1).getJSONObject("ability");
+                JSONObject ability2 = abilities.getJSONObject(1).getJSONObject("ability");
                 ability2TextView.setText(ability2.getString("name"));
+                ability2TextView.setVisibility(View.VISIBLE);
                 ability3TextView.setVisibility(View.GONE);
             } else if (max == 3) {
-                JSONObject ability2 = teste.getJSONObject(1).getJSONObject("ability");
+                JSONObject ability2 = abilities.getJSONObject(1).getJSONObject("ability");
                 ability2TextView.setText(ability2.getString("name"));
+                ability2TextView.setVisibility(View.VISIBLE);
 
-                JSONObject ability3 = teste.getJSONObject(2).getJSONObject("ability");
+                JSONObject ability3 = abilities.getJSONObject(2).getJSONObject("ability");
                 ability3TextView.setText(ability3.getString("name"));
+                ability3TextView.setVisibility(View.VISIBLE);
             } else{
                 ability2TextView.setVisibility(View.GONE);
                 ability3TextView.setVisibility(View.GONE);
@@ -151,12 +170,14 @@ public class DetailsActivity extends AppCompatActivity {
             String type1 = firstType.getString("name");
             btnType1.setText(type1);
             btnType1.setBackgroundColor(Color.parseColor(mapType.get(type1)));
+            btnType1.setVisibility(View.VISIBLE);
 
             if (max > 1) {
                 JSONObject secondType = types.getJSONObject(1).getJSONObject("type");
                 String type2 = secondType.getString("name");
                 btnType2.setText(type2);
                 btnType2.setBackgroundColor(Color.parseColor(mapType.get(type2)));
+                btnType2.setVisibility(View.VISIBLE);
             } else {
                 btnType2.setVisibility(View.GONE);
             }
